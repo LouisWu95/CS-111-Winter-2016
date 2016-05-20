@@ -1,1 +1,14 @@
+Tianyan wu
+904274478
+Ryan Li
+701142155
 
+
+This submission includes 2 source files for addtest and sltest written in C code.
+I put the content of SortedList.h inside my sltest.c file.
+Each implements a multithreaded program. The first one is checking add, while the second one
+is checking growing and deleting elements in a linked list.
+
+There is another PDF file that shows the graph. 
+
+Also pleast don't use make to run the code. Please type in the commands on shell.

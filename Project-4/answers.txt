@@ -1,0 +1,133 @@
+Tianyan Wu
+904274478
+Ryan Li
+704142455
+
+This file has my answers for all the questions in Lab 4
+
+QUESTION 1.1
+
+1. Later on in this project, we will find that the add function should be in a critical
+section. Therefore all threads will access the counter. As a result, race condition will
+happen. If multiple threads call the same function at the same time, then it's very
+likely for race condition to happen.
+
+When there is no race condition, the value of counter will not be 0. We need to find out
+some point at which the final counter will not be 0. Therefore we need to use enough
+threads so that we could get a wrong result. Taking many threads and mant iterations
+increases the chance for race condition to happen. We want race condition to happen so
+that we could test whether the synchronization technique could work. 
+
+2. When we have a small number of iterations, the race condition will less likely to
+happen. This is becasue it's less likely for multiple threads to access the counter
+at the same time. Whereas if iteration is very large, then all the threads have to keep
+doing their job of accessing the counter. There is just more access to the counter
+variable if the number of iterations is large.
+
+
+QUESTION 1.2
+1. As the number of iterations increases the total number of operations will also increase. Increasing
+iterations has the benefit of spreading out overheads. Creating threads is the overhead in our program.
+It takes a lot of time. So no matter how many iterations you have, creating thread, this action itself, will
+cost you the most amount of time. Therefore the total time doesn't get affected too much as the number of
+iterations increase. But since average time is total time divided by number of iterations. If there are
+more iterations, then the average time will definitely drop down. 
+
+
+2. We can do this by setting the number of iterations as high as possibleto approach a limiting value.
+We want to approach that limit. As we approach that limit, the overhead time per operation becomes
+almost 0. Then thread creation won't affect total time too much. So we could see the true cost per
+operation.
+
+
+3. By doing yield, we let one thread gives up its control and switch to another thread. The context switch
+time among all the threads increase the total time. 
+
+
+4. The presence of yield will not affect the validity of timing, because yield triggers the context switch.
+The context switches time will become a overhead no matter how many iterations we have. But the total time
+increased due to yield depends on the number of threads. As by observation,even with the yield option
+activated, the average time per operation still drops down as the number of iterations increases. We should
+still get valid timing even as the number of iterations increases. 
+
+
+QUESTION 1.3
+1. When there is no number of threads, the effect of race condition is not that obvious. Race condition does
+not happen very frequently when number of threads is low. As the number of threads increase, more
+competitions will happen. Therefore it's hard to distinguish the performance of the three methods.
+
+2. As the number of threads increase, all three methods will slow down, because there are more threads
+waiting for getting the lock. For mutex, more threads are getting blocked. In spin lock, more threads
+are waiting. Same idea applies to the third method.
+
+3. Spin lock uses the idea of busy waiting. This means that there is a wait loop. A thread has to keep
+waiting until the lock is open. There are way too much useless waiting time. 
+
+
+QUESTION 2.1
+As the number of operations increase, the time per operation also increases. This is because what each
+thread does includes insertion, length, deletion and lookup. As the iterations increases, the size of the
+global variable, the linked list. Since linked list lookup is O(n), if the linked list is getting longer,
+the insertion and lookup will also take longer. Increasing operations will definitely make the linked list
+longer.
+
+
+QUESTION 2.2
+The key part is the variations reflected on the graph.
+For graph result from part 1, when there is no lock, the average time per operation increaes and then stabilize.
+For a mutex, the average time per operation increases then decrease, and stabilize. However, for spin lock,
+the average time per operation increase as the number of threads increases.
+
+On the other hand, the part 2 result shows that the average time per operation increases as number of threads
+increase.
+
+In part 1, increasing number of threads will increase the time on waiting for all 3 methods, but in different way.
+For spin lock, if a thread is waiting,it is busy waiting, and that consumes CPU time. While for the compare and
+swap, it doesn't really have locking. While for mutex, basically a thread is blocked if some other thread is
+in critical section. So these 2 methods don't get affected too much as number of threads keep growing. 
+
+For part 2, the average time per operation increases because increasing number of threads increase the total
+number of nodes in the list, therefore for each thread, as it tries to insert or lookup, it takes longer time
+for it search. To insert, maybe it takes longer time to find the correct spot to insert in the list.
+
+
+QUESTION 2.3
+
+The average time per operation vs threads per list gradually increases as number of threads increases.
+The reason is similar. As more threads, the length of each list is also getting larger. That means within
+each list, it will takes longer time to find a spot to insert, for lookup a particular node, or calculate the list.
+For calculating the length, basically the program look up all the sublists and add up their lengths. 
+
+Threads per list is more interesting is because if we just count the thread time, then we are counting all the threads.
+We are interested in time spent on insertion, deletion and counting length. This time are done via iterating through a
+list. This method is supposed to save a lot of time because the total time complexity is decreased. When you insert a
+node, just do a single operation to map the list to insert, and insert into that list, which has significantly less
+nodes compare to the list in previous section. It's unfair to compare threads versus the time per operation because it
+doesn't really reflect the time we want. To make it fairer, we are more interested in threads per list. 
+
+
+QUESTION 3.1
+1. What pthread_cond_wait does is automically unlocks a mutex which is previously locked and thread to
+the conditional variable's wait queue. So it's job is similar to a release in the locking mechanism in
+part 1 and 2. To unlock a mutex, the most critical thing is that this mutex has to be already held.
+Meanwhile this function is implemented within a loop. If the mutex is not held when the function is called,
+another thread might change the shared data between the time when condition is checked and the time the
+thread wait.
+
+
+2. The calling thread has to wait until the condition becomes true. If the waiting thread wants to be free
+and go on, the mutex has to be released. 
+
+3. When calling thread resumes, finish waiting, we need to relock the mutex to make sure that other threads
+which are supposed to be locked are still locked. Otherwise they could cause race condition, ans since their
+conditions are not met, the consequence is gonna be pretty bad.
+
+4. pthread_cond_waid is an atomic function that blocks a waiting thread instead of letting it spin around.
+It's kinda similar to the wait_event_interruptible in lab 2. The key part is the purpose of this function is
+to let a thread wait until a condition is met. If the mutex is released before calling pthread_cond_wait, the
+the race condition could affect the shared data. If the thread is waiting for a condition related to shared
+data then we could have bad result. 
+
+5. It could not be done in user-mode implementation, because it takes care of the wait-queue which maintians
+all the threads waiting for the condition. It's safe to just let CPU to ensure that all the waiting threads are
+locked. 
