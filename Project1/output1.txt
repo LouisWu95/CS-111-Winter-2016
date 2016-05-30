@@ -1,0 +1,54 @@
+cc = gcc
+cflags = -g -wall -wextra -wno-unused -werror -std=c11
+lab = 1
+distdir = lab1-tianyanwuryanli
+
+all: simpsh
+
+tests = $(wildcard test*.sh)
+test_bases = $(subst .sh,,$(tests))
+
+simpsh_sources = \
+  simpsh.c 
+simpsh_objects = $(subst .c,.o,$(simpsh_sources))
+
+dist_sources = \
+  $(simpsh_sources) makefile readme catch.h option.h verbose.h execline1 execline2 execline3 output1.txt output2.txt error.txt check-dist $(tests)
+
+simpsh: $(simpsh_objects)
+	$(cc) $(cflags) -o $@ $(simpsh_objects)
+
+#alloc.o: alloc.h
+#execute-command.o main.o print-command.o read-command.o: command.h
+#execute-command.o print-command.o read-command.o: command-internals.h
+
+dist: $(distdir).tar.gz
+
+$(distdir).tar.gz: $(dist_sources) check-dist
+	rm -fr $(distdir)
+	tar -czf $@.tmp --transform='s,^,$(distdir)/,' $(dist_sources)
+	./check-dist $(distdir)
+	mv $@.tmp $@
+
+check: $(test_bases)
+
+$(test_bases): simpsh
+	./$@.sh
+
+clean:
+	rm -fr *.o *~ *.bak *.tar.gz core *.core *.tmp simpsh $(distdir)
+
+.phony: all dist check $(test_bases) clean
+    {
+    }
+{
+}
+	   break;
+      i++;
+      if(argv[i][0]== '-' && argv[i][1]=='-')  
+  int i = index+1;
+  printf("\n");
+      printf(" %s", argv[i]); 
+  printf ("%s", argv[index]);
+void print_verbose(int argc, char **argv, int index)
+  while (i<argc)

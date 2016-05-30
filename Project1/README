@@ -1,1 +1,44 @@
+Tianyan Wu
+904274478
 
+Ryan Li
+704142455
+
+This project is written by Tianyan Wu and Ryan Li. The fundamental idea for
+programming this project is by using getopt_long to parse the input argument
+and handle different options in different ways. The function getopt_long could
+recognize the long options that I typed in through the standard input. We used
+the switch statement to process different options. For rdonly and wronly, we
+simply used the open function to open the file. For command, we used the execvp
+function to implement the command.
+
+During this project, we encountered several problems. Firstly, we had to figure
+out how to save the file descriptor. Whenever we open a file, the open function
+should return a file descriptor. Later on as we used the command, we need to
+get that file descriptor. The idea is to use a dynamically allocated array to
+store the file descriptor. Another problem we had was about error checking.
+If I typed in the option --rdonly without an argument, or I typed more than one
+arguments after this option, the simpsh should give error messages. We solved
+this problem by using the optind variable. When we defined the option --rdonly,
+we sad there is required argument for it. That means when the getopt_long sees
+the option --rdonly, the optarg should points to the argument right next to
+"--rdonly" in the input string. Thus if optarg is a string that start with
+double dashes, then there is no argument. The variable optind gives the index
+of the string next to the optarg in the input argument, argv. Thus if argv[optind] is
+not an option (does not start with double dash), then this is an argument. This implies
+that there are more than 1 argument for --rdonly.
+
+For project 1B: the difficulties are related to implementing --pipe and all the other
+signal options. For pipe, we have to save all the pipe end descriptors into the file
+descriptor table. I implemented the pipe system call, and save the values at the file
+descriptor table. But one thing to keep in mind is that at the end, before we do wait, we
+need to make sure that we close all the pipes, otherwise the program hang forever.
+The signal options are implemented based on signal system calls. For catch, we just pass in
+signal handler as an argument. For abort, I did raise, which generates a segmentation fault.
+
+For project 1C: the getrusage function can give us the resource usage of the program. To get the
+resource usage for each option, we have to call getrusage first to get the resource usage when
+the function is called, then we implement the function, and at the end we get the resource usage
+and do a subtraction. For the benchmarks, the difficulty is to get familiar with the execline.
+I did three commands, and implemented them in three different shells. Then I used time command to
+measured their running time. 

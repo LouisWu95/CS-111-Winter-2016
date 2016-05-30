@@ -1,0 +1,5 @@
+#!/usr/local/cs/execline-2.1.4.5/bin/execlineb
+redirfd -w 1 output.txt
+pipeline { cat sample.txt }
+pipeline { sort }
+grep a 

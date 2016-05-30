@@ -1,0 +1,10 @@
+#!/usr/local/cs/execline-2.1.4.5/bin/execlineb
+redirfd -w 1 output.txt
+redirfd -w 2 error.txt
+pipeline {
+	 sort sample.txt
+}
+pipeline {
+	 cat test.txt -
+}
+tr A-Z a-z
